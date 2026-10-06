@@ -23,8 +23,11 @@ yarn-debug.log*
 yarn-error.log*
 'n.env
 
-.env
+
 
 client/build/
 
-server/.env
+node_modules/
+.env
+.env.*
+!.env.example

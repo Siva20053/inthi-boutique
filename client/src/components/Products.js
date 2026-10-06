@@ -1,29 +1,51 @@
 import React from "react";
 import ProductsCard from "./ProductsCard";
 
-const Products = ({ products }) => {
+const Products = ({ products = [] }) => {
   return (
-    <div className="py-10">
-      <div className="flex flex-col items-center gap-4">
-        <h1 className="text-xl sm:text-2xl bg-black text-white py-2 w-[calc(100%-2rem)] max-w-80 text-center">
-          shopping everyday
-        </h1>
-        <span className="w-20 h-[3px] bg-black"></span>
-        <p className="max-w-[700px] px-4 text-sm sm:text-base text-gray-600 text-center">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo,
-          quos fugit inventore, cumque quae corporis ratione tenetur eos
-          voluptates neque magnam soluta aperiam omnis perspiciatis reiciendis
-          asperiores repudiandae assumenda quidem.
-        </p>
+    <section className="py-12 sm:py-16 lg:py-20 bg-white">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* SECTION HEADER */}
+        <div className="flex flex-col items-center text-center gap-3 mb-8 sm:mb-10">
+
+          <p className="text-xs uppercase tracking-[0.25em] text-gray-500">
+            Inthi Collection
+          </p>
+
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-wide text-gray-900">
+            Our Collection
+          </h2>
+
+          <span className="w-12 h-[2px] bg-black" />
+
+          <p className="max-w-[650px] px-4 text-sm sm:text-base text-gray-600 leading-6">
+            Explore our latest collection of thoughtfully curated
+            styles, selected with care for every occasion.
+          </p>
+
+        </div>
+
+        {/* PRODUCTS */}
+        {products.length > 0 ? (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+            {products.map((item) => (
+              <ProductsCard
+                key={item.id}
+                product={item}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="py-16 text-center">
+            <p className="text-gray-500 text-sm">
+              Our collection is being updated. Please check back soon.
+            </p>
+          </div>
+        )}
+
       </div>
-      {/* =================== Products Start here ================= */}
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-10 py-8 sm:py-10">
-        {products.map((item) => (
-          <ProductsCard key={item._id} product={item} />
-        ))}
-      </div>
-      {/* =================== Products End here =================== */}
-    </div>
+    </section>
   );
 };
 

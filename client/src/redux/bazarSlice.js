@@ -1,58 +1,84 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 const initialState = {
   productData: [],
   userInfo: null,
 };
 
+const getCartItemKey = (item) => {
+  return `${item._id}-${item.variantId || "default"}-${
+    item.size || "no-size"
+  }-${item.color || "no-color"}`;
+};
+
 export const bazarSlice = createSlice({
   name: "bazar",
   initialState,
+
   reducers: {
     addToCart: (state, action) => {
-      const item = state.productData.find(
-        (item) => item._id === action.payload._id
+      const incomingItem = action.payload;
+
+      const incomingKey = getCartItemKey(incomingItem);
+
+      const existingItem = state.productData.find(
+        (item) => getCartItemKey(item) === incomingKey
       );
 
-      if (item) {
-        item.quantity += action.payload.quantity;
+      if (existingItem) {
+        existingItem.quantity += incomingItem.quantity;
       } else {
-        state.productData.push(action.payload);
+        state.productData.push(incomingItem);
       }
     },
+
     increamentQuantity: (state, action) => {
+      const incomingItem = action.payload;
+
       const item = state.productData.find(
-        (item) => item._id === action.payload._id
+        (item) => getCartItemKey(item) === getCartItemKey(incomingItem)
       );
+
       if (item) {
         item.quantity++;
       }
     },
+
     decrementQuantity: (state, action) => {
+      const incomingItem = action.payload;
+
       const item = state.productData.find(
-        (item) => item._id === action.payload._id
+        (item) => getCartItemKey(item) === getCartItemKey(incomingItem)
       );
-      if (item.quantity === 1) {
-        item.quantity = 1;
-      } else {
-        item.quantity--;
+
+      if (item) {
+        if (item.quantity > 1) {
+          item.quantity--;
+        }
       }
     },
+
     deleteItem: (state, action) => {
+      const itemToDelete = action.payload;
+
       state.productData = state.productData.filter(
-        (item) => item._id !== action.payload
+        (item) => getCartItemKey(item) !== getCartItemKey(itemToDelete)
       );
     },
+
     resetCart: (state) => {
       state.productData = [];
     },
-    // =============== User Start here ==============
+
+    // ================= USER =================
+
     addUser: (state, action) => {
       state.userInfo = action.payload;
     },
+
     removeUser: (state) => {
       state.userInfo = null;
     },
-    // =============== User End here ================
   },
 });
 
