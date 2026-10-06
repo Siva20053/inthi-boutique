@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const API_URL =
@@ -39,23 +39,18 @@ const AdminCategories = () => {
   // FETCH CATEGORIES
   // =====================================================
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/admin/login");
-      return;
-    }
 
-    fetchCategories();
-  }, [navigate, token]);
 
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
       setLoading(true);
 
       const response = await fetch(
         `${API_URL}/admin/categories`,
         {
-          headers: authHeaders,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -88,7 +83,16 @@ const AdminCategories = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [navigate, token]);
+
+    useEffect(() => {
+      if (!token) {
+        navigate("/admin/login");
+        return;
+      }
+
+      fetchCategories();
+    }, [fetchCategories, navigate, token]);
 
   // =====================================================
   // FORM HANDLER

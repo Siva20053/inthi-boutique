@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const API_URL =
@@ -39,23 +39,18 @@ const AdminBanners = () => {
   // FETCH BANNERS
   // =====================================================
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/admin/login");
-      return;
-    }
 
-    fetchBanners();
-  }, [navigate, token]);
 
-  const fetchBanners = async () => {
+  const fetchBanners = useCallback(async () => {
     try {
       setLoading(true);
 
       const response = await fetch(
         `${API_URL}/admin/banners`,
         {
-          headers: authHeaders,
+          headers: {
+          Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -88,7 +83,16 @@ const AdminBanners = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [navigate, token]);
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/admin/login");
+      return;
+    }
+
+    fetchBanners();
+  }, [fetchBanners, navigate, token]);
 
   // =====================================================
   // FORM HANDLER

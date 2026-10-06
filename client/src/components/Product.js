@@ -61,9 +61,10 @@ const Product = () => {
     getStoreSettings();
   }, []);
 
+  const variants = useMemo(() => details?.variants || [], [details?.variants]);
+
   // ================= VARIANTS =================
 
-  const variants = details?.variants || [];
 
   const sizes = useMemo(() => {
     return [

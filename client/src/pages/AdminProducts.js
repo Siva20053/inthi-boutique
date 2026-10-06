@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -48,7 +48,7 @@ const AdminProducts = () => {
   // LOAD PRODUCTS + CATEGORIES
   // =====================================================
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -63,7 +63,11 @@ const AdminProducts = () => {
         await Promise.all([
           axios.get(
             `${API_URL}/admin/products`,
-            authConfig
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
           ),
 
           axios.get(
@@ -103,11 +107,11 @@ const AdminProducts = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [navigate, token]);
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [loadData]);
 
   // =====================================================
   // FORM HANDLERS

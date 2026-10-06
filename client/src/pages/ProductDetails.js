@@ -54,7 +54,7 @@ const ProductDetails = () => {
 
   // ================= VARIANTS =================
 
-  const variants = product?.variants || [];
+  const variants = useMemo(() => product?.variants || [], [product?.variants]);
 
   const sizes = useMemo(() => {
     return [
