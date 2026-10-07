@@ -19,6 +19,7 @@ const Product = () => {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [storeSettings, setStoreSettings] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(0);
 
   // ================= FETCH PRODUCT =================
 
@@ -32,6 +33,7 @@ const Product = () => {
         );
 
         setDetails(response.data.product);
+        setSelectedImage(0);
       } catch (error) {
         console.error("Failed to load product:", error);
         setDetails(null);
@@ -126,10 +128,19 @@ const Product = () => {
 
   // ================= IMAGE =================
 
-  const image =
+  const images =
     details?.images?.length > 0
-      ? details.images[0].image_url
-      : "https://via.placeholder.com/600x800?text=Inthi";
+      ? details.images
+      : [
+          {
+            image_url:
+              "https://via.placeholder.com/600x800?text=Inthi",
+          },
+        ];
+
+  const image =
+    images[selectedImage]?.image_url ||
+    images[0]?.image_url;
 
   // ================= PRICE =================
 
@@ -219,6 +230,7 @@ const Product = () => {
     message += `I'd like to order:\n\n`;
 
     message += `1. ${details.name}\n`;
+    message += `   Product ID: ${details.id}\n`;
 
     if (selectedSize) {
       message += `   Size: ${selectedSize}\n`;
@@ -290,14 +302,40 @@ const Product = () => {
         {/* ================= IMAGE ================= */}
 
         <div className="w-full lg:w-1/2">
-          <div className="w-full h-[500px] sm:h-[600px] overflow-hidden">
+          {/* MAIN IMAGE */}
+          <div className="w-full h-[500px] sm:h-[600px] overflow-hidden bg-gray-100">
             <img
               src={image}
               alt={details.name}
               className="w-full h-full object-cover"
             />
-          </div>
+         </div>
+
+          {/* IMAGE THUMBNAILS */}
+          {images.length > 1 && (
+          <div className="flex gap-3 mt-4 overflow-x-auto pb-2">
+            {images.map((item, index) => (
+            <button
+              key={item.id || index}
+              type="button"
+              onClick={() => setSelectedImage(index)}
+                className={`w-20 h-24 sm:w-24 sm:h-28 flex-shrink-0 overflow-hidden border-2 ${
+                  selectedImage === index
+                  ? "border-black"
+                  : "border-transparent"
+              }`}
+            >
+              <img
+                src={item.image_url}
+                alt={`${details.name} ${index + 1}`}
+                className="w-full h-full object-cover"
+              />
+            </button>
+          ))}
         </div>
+      )}
+
+    </div>
 
         {/* ================= DETAILS ================= */}
 

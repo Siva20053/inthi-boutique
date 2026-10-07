@@ -74,16 +74,17 @@ const Shop = () => {
 
       result = result.filter((product) => {
         return (
+          String(product.id).includes(searchText) ||
           product.name?.toLowerCase().includes(searchText) ||
           product.category_name
             ?.toLowerCase()
             .includes(searchText) ||
           product.description
             ?.toLowerCase()
-            .includes(searchText) ||
+           .includes(searchText) ||
           product.fabric
             ?.toLowerCase()
-            .includes(searchText)
+           .includes(searchText)
         );
       });
     }

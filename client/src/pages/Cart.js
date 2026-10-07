@@ -89,6 +89,7 @@ const Cart = () => {
 
     productData.forEach((item, index) => {
       message += `${index + 1}. ${item.title}\n`;
+      message += `   Product ID: ${item._id}\n`;
 
       if (item.size) {
         message += `   Size: ${item.size}\n`;

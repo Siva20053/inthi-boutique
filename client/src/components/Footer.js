@@ -35,6 +35,25 @@ const Footer = () => {
   };
 
   const storeName = settings?.store_name || "Inthi";
+  const instagramUrl = (() => {
+    const value = settings?.instagram?.trim();
+
+    if (!value) return "";
+
+    if (/^https?:\/\//i.test(value)) {
+      return value;
+    }
+
+    if (value.startsWith("@")) {
+      return `https://www.instagram.com/${value.substring(1)}`;
+    }
+
+    if (/^(www\.)?instagram\.com/i.test(value)) {
+      return `https://${value}`;
+    }
+
+    return `https://www.instagram.com/${value.replace(/^\/+/, "")}`;
+  })();
 
   return (
     <footer className="bg-black text-gray-400 font-titleFont">
@@ -57,9 +76,9 @@ const Footer = () => {
             </p>
 
             {/* SOCIAL */}
-            {settings?.instagram && (
+            {instagramUrl && (
               <a
-                href={settings.instagram}
+                href={instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex mt-6 text-xl text-gray-400 hover:text-white transition"
