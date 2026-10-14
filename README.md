@@ -1,6 +1,8 @@
 # Inthi Boutique 🛍️
 
-A full-stack e-commerce catalogue built for **Inthi**, a real boutique store. Customers can browse products, choose variants such as size, add items to their bag, and send their order enquiry through WhatsApp—without creating an account or using an online payment gateway.
+A full-stack e-commerce catalogue built for **Inthi**, a real boutique store.
+
+🌐 **Live website:** [Live website](https://inthihub.in) Customers can browse products, choose variants such as size, add items to their bag, and send their order enquiry through WhatsApp—without creating an account or using an online payment gateway.
 
 ## ✨ Features
 
